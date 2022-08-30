@@ -1,13 +1,27 @@
-$('$formulario :input').on('input propertychange', function(){
+$("#container-listar").hide();
+
+$('#formulario :input').on('input propertychange', function(){
     var litros = $("#litros").val();
     var kms = $("#kms").val();
     var preco = $("#preco").val();
     
-    if (litros.length )
+    if (litros.length != 0 && kms.length != 0 && preco.length != 0 ){
+        litros = parseFloat(litros);
+        kms = parseFloat(kms);
+        preco = parseFloat(preco);
+
+        var Autonomia = kms / litros;
+        var custo_km = (Autonomia / preco);
+
+        $("#calculos").html(`
+            Autonomia: ${(Autonomia).toFixed(1)}km/l
+            <br>
+            Custo por km: ${custo_km.toFixed(1)}
+            <br>
+            Custo total: ${(custo_km * kms).toFixed(1)}
+        `)
+    }
 });
-
-
-$("#container-listar").hide();
 
 $( "#formulario" ).submit(function( event ) {
     event.preventDefault()
