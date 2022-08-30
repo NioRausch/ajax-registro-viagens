@@ -91,21 +91,12 @@ $( "#formulario" ).submit(function( event ) {
                 //Inicia a animação da barrinha
                 id = setInterval(animation, 10);
                 console.log("Post recebido! " + msg);
+                //O post já foi inserido na database
+
+                //Executa o get para receber a tabela da database
+                xhttp.open("GET", "?pagina=db", true);
+                xhttp.send();
                 //alert('wow' + msg);
-            },
-            done: function(msg){ 
-                console.log("Done " + msg);
-                if (msg == "DONE_SQL"){
-                    //O post já foi inserido na database
-
-                    //Executa o get para receber a tabela da database
-                    xhttp.open("GET", "?pagina=db", true);
-                    xhttp.send();
-
-                    return true;
-                } else {
-                    return false;
-                }
             }
         });
 
