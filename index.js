@@ -1,4 +1,13 @@
+$('$formulario :input').on('input propertychange', function(){
+    var litros = $("#litros").val();
+    var kms = $("#kms").val();
+    var preco = $("#preco").val();
+    
+    if (litros.length )
+});
 
+
+$("#container-listar").hide();
 
 $( "#formulario" ).submit(function( event ) {
     event.preventDefault()
@@ -23,34 +32,41 @@ $( "#formulario" ).submit(function( event ) {
         `);
 
         form.append(`
-            <div class="progress">
+            <div class="progress" id="progress-bar">
                 <div class="progress-bar" role="progressbar" id="loading" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         `);
 
-        var xhttp = new XMLHttpRequest();
 
-        xhttp.onload = function() {
-            
-            if (this.readyState == 4 && this.status == 200) {
-
-                
-            }
-        };
 
         var id = null;
         var loading = $('#loading');
         var width = 0;
         var container = $("#container-registro");
+        var container_lista = $("#container-listar");
+        var container_lista_body = $("#tbody");
         var post_recebido = false;
 
+        var xhttp = new XMLHttpRequest();
+
+        var recebido_get = false;
+
+        xhttp.onload = function() {
+            
+            if (this.readyState == 4 && this.status == 200) {
+                recebido_get = true;
+                console.log("getrecebido");
+            }
+        };
+
         function animation() {
-            if (width >= 180){
+            if (width >= 180 && recebido_get == true){
                 clearInterval(id);
-                console.log("Stop");
+                console.log("Exibindo lista");
 
                 container.hide()
-                container.html(xhttp.responseText)
+                container_lista_body.html(xhttp.responseText)
+                container_lista.show()
             }
             else{
                 //A barrinha ira travar na metade se o post ainda n foi recebido
@@ -91,6 +107,7 @@ $( "#formulario" ).submit(function( event ) {
                 //Inicia a animação da barrinha
                 id = setInterval(animation, 10);
                 console.log("Post recebido! " + msg);
+                post_recebido = true;
                 //O post já foi inserido na database
 
                 //Executa o get para receber a tabela da database
@@ -104,3 +121,24 @@ $( "#formulario" ).submit(function( event ) {
 
     this.classList.add('was-validated')
 })
+
+$("#botao-voltar").on("click", function( event ){
+
+    var buttons = $("#formulario :button");
+    var inputs = $("#formulario :input");
+    var form = $("#formulario");
+
+    inputs.prop("disabled", false);
+    buttons.prop("disabled", false);
+    buttons.html("Enviar");
+
+    inputs.val("");
+
+    $("#progress-bar").remove();
+
+    form.removeClass('was-validated')
+
+    $("#container-listar").hide();
+    $("#container-registro").show();
+})
+

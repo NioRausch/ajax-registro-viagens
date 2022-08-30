@@ -1,5 +1,5 @@
 <?php
-    include_once "lib/conexao.php"
+    include_once "lib/conexao.php";
 
     if (isset($_POST["registrar"])){
         $sql = "INSERT into viagens(modelo,placa,motorista,origem,destino, kilometros, litros, preco_gasolina)
@@ -7,7 +7,7 @@
 
         $consulta = $conn->prepare($sql);
         if($consulta->execute(array(
-            "nome" => $_POST["nome"],
+            "motorista" => $_POST["nome"],
             "modelo" => $_POST["modelo"],
             "placa" => $_POST["placa"],
             "origem" => $_POST["origem"],
@@ -21,7 +21,25 @@
         }
     }
     else if (isset($_GET["pagina"]) && $_GET["pagina"] = "db"){
-        echo "Test";
+        $sql = "SELECT * from viagens";
+
+        $consulta = $conn->prepare($sql);
+        $resultado = $consulta->execute();
+
+        while($linha = $consulta->fetch()){
+
+            echo '<tr>';
+            echo "<th scope='row'>{$linha['id']}</th>";
+            echo "<td>{$linha['modelo']}</td>";
+            echo "<td>{$linha['placa']}</td>";
+            echo "<td>{$linha['motorista']}</td>";
+            echo "<td>{$linha['origem']}</td>";
+            echo "<td>{$linha['destino']}</td>";
+            echo "<td>{$linha['kilometros']}</td>";
+            echo "<td>{$linha['litros']}</td>";
+            echo "<td>{$linha['preco_gasolina']}</td>";
+            echo "</tr>";
+        }
     }
     else{
         include "index.html";
