@@ -11,14 +11,14 @@ $('#formulario :input').on('input propertychange', function(){
         preco = parseFloat(preco);
 
         var Autonomia = kms / litros;
-        var custo_km = (Autonomia / preco);
+        var custo_km = (1 / Autonomia) * preco;
 
         $("#calculos").html(`
             Autonomia: ${(Autonomia).toFixed(1)}km/l
             <br>
-            Custo por km: ${custo_km.toFixed(1)}
+            Custo por km: ${custo_km.toFixed(1)} R$
             <br>
-            Custo total: ${(custo_km * kms).toFixed(1)}
+            Custo total: ${(custo_km * kms).toFixed(1)} R$
         `)
     }
 });
